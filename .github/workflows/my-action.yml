@@ -1,0 +1,11 @@
+name: Run My Custom Action
+
+on:
+  workflow_dispatch: # This adds a manual button to trigger the action
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 24ds3000035@ds.study.iitm.ac.in
+        run: echo "Hello, world!"
