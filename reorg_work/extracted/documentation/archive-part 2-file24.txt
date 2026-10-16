@@ -1,0 +1,10 @@
+category: documentation
+
+KNOWLEDGE ARTICLES - File 24
+
+This is a test file for the reorganization exercise.
+Path: archive/part 2/file24.txt
+Category: documentation
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.

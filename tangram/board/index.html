@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="data:,">
+  <title>Tangram · TDS Network Games</title>
+  <style>
+    * { box-sizing: border-box; }
+    :root { color-scheme: dark; font-family: system-ui, sans-serif; }
+    body { margin: 0; background: #0e130f; color: #edf5ef; }
+    main { max-width: 1180px; margin: auto; padding: clamp(.6rem, 2vw, 1rem); }
+    h1 { font-size: clamp(1.5rem, 5vw, 2.2rem); margin: 0 0 .3rem; }
+    h2 { font-size: 1rem; margin: 0 0 .7rem; }
+    p { color: #b9c9bd; text-wrap: pretty; }
+    .intro { max-width: 70ch; margin-top: .3rem; }
+    .layout { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(17rem, .8fr); gap: 1rem; align-items: start; }
+    .panel { min-width: 0; background: #151c17; border: 1px solid #405247; border-radius: .65rem; padding: clamp(.65rem, 2vw, 1rem); }
+    .submit-panel { margin: .8rem 0 1rem; }
+    #board {
+      display: block;
+      width: 100%;
+      max-width: 100%;
+      aspect-ratio: 4 / 3;
+      border: 1px solid #405247;
+      background-color: #0d120f;
+      background-image:
+        linear-gradient(to right, rgb(255 255 255 / .045) 1px, transparent 1px),
+        linear-gradient(to bottom, rgb(255 255 255 / .045) 1px, transparent 1px);
+      background-size: calc(100% / 48) calc(100% / 36);
+      touch-action: none;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    #board [data-piece] { cursor: grab; outline: none; }
+    #board [data-piece]:active { cursor: grabbing; }
+    #board [data-piece]:focus { outline: none; }
+    #board .selected-piece {
+      stroke: #ffd166 !important;
+      stroke-width: 2px !important;
+      stroke-linejoin: miter !important;
+      filter: none !important;
+    }
+    .meta { display: grid; gap: .3rem; font-size: .88rem; margin-top: .7rem; }
+    output { overflow-wrap: anywhere; }
+    #status[data-invalid="true"] { color: #ffb2aa; font-weight: 700; }
+    label { display: grid; gap: .25rem; min-width: 0; font-size: .9rem; }
+    input, select, textarea, button { min-width: 0; max-width: 100%; font: inherit; }
+    input, select, textarea { width: 100%; background: #0b100c; color: inherit; border: 1px solid #53675a; border-radius: .35rem; padding: .48rem; }
+    button { background: #27382c; color: inherit; border: 1px solid #617966; border-radius: .35rem; padding: .5rem .7rem; cursor: pointer; min-height: 2.3rem; }
+    button:disabled { opacity: .55; cursor: progress; }
+    button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+    .actions { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; margin-block: .75rem; }
+    .border-toggle[aria-pressed="true"] { background: #d5f4dc; color: #102716; border-color: #d5f4dc; font-weight: 700; }
+    .border-toggle[aria-pressed="false"] { background: #361f22; color: #ffd9dc; border-color: #8f5960; font-weight: 700; }
+    .submit-row { display: grid; grid-template-columns: minmax(16rem, 1fr) auto minmax(12rem, .8fr); gap: .65rem; align-items: center; }
+    .email-field { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: .55rem; align-items: center; }
+    .email-field > span { white-space: nowrap; }
+    .submit-row input, .submit-row button, .receipt-status { min-height: 2.5rem; }
+    .receipt-status { display: flex; align-items: center; font-size: .9rem; }
+    textarea { min-height: 5.5rem; resize: vertical; }
+    kbd { border: 1px solid #53675a; border-radius: .2rem; padding: .05rem .28rem; }
+    .note { font-size: .86rem; color: #96aa9b; }
+    .how-marking { margin: .85rem 0 0; padding-top: .75rem; border-top: 1px solid #334239; }
+    @media (max-width: 800px) { .layout { grid-template-columns: 1fr; } }
+    @media (max-width: 620px) {
+      .submit-row { grid-template-columns: 1fr; align-items: stretch; }
+      .receipt-status { min-height: 2rem; }
+      .submit-row button { width: 100%; }
+    }
+    @media (max-width: 420px) {
+      .actions > button { flex: 1 1 8rem; }
+      main { padding-inline: .5rem; }
+    }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Tangram</h1>
+  <p class="intro">Move all 7 shapes to match the target picture. Drag a shape to move it. It snaps to a small grid to make alignment easier. Double-click a shape to turn it 45°. Use <strong>Flip</strong> when you need to mirror a shape. A red status means shapes overlap or sit outside the board.</p>
+
+  <section class="panel submit-panel">
+    <div class="submit-row">
+      <label class="email-field"><span>Email</span>
+        <input id="email" type="email" autocomplete="email" placeholder="student@example.com" required>
+      </label>
+      <button id="attest" type="button">Generate signed payload</button>
+      <output id="receipt-status" class="receipt-status" aria-live="polite">Not generated yet.</output>
+    </div>
+  </section>
+
+  <div class="layout">
+    <section class="panel">
+      <svg id="board" viewBox="0 0 24 18" role="img" aria-label="Tangram board with seven draggable pieces"></svg>
+      <div class="meta">
+        <span>Status: <output id="status"></output></span>
+        <span>Revision: <output id="revision"></output></span>
+        <span>Candidate match key: <output id="match-key"></output></span>
+        <span>Share state: <output id="link-status"></output></span>
+        <span>History: <output id="history-status"></output></span>
+        <span>WebMCP: <output id="webmcp-status"></output></span>
+      </div>
+      <div class="actions">
+        <button id="export-image" type="button">Export PNG</button>
+        <button id="borders" class="border-toggle" type="button" aria-pressed="true">Labels on</button>
+        <button id="download-history" type="button">Download history</button>
+        <button id="save-share" type="button">Save/share URL</button>
+      </div>
+      <p class="note how-marking"><strong>How marking works.</strong> This page checks that your shapes form a valid Tangram. It does not know the target answer. When you submit, the server signs your current arrangement and recent action history. The course grader checks the signature and compares your arrangement with the target.</p>
+    </section>
+
+    <section class="panel">
+      <h2>Move pieces</h2>
+      <label>Selected piece
+        <select id="piece">
+          <option value="" selected>None</option>
+          <option value="large-a">Large triangle A</option>
+          <option value="large-b">Large triangle B</option>
+          <option value="medium">Medium triangle</option>
+          <option value="small-a">Small triangle A</option>
+          <option value="small-b">Small triangle B</option>
+          <option value="square">Square</option>
+          <option value="parallelogram">Parallelogram</option>
+        </select>
+      </label>
+      <div class="actions">
+        <button id="rotate-left" type="button">Rotate left 45°</button>
+        <button id="rotate-right" type="button">Rotate right 45°</button>
+        <button id="flip" type="button">Flip</button>
+        <button id="undo" type="button">Undo</button>
+        <button id="redo" type="button">Redo</button>
+        <button id="reset" type="button">Reset</button>
+      </div>
+      <p class="note">You can also use the arrow keys to move the selected shape. <kbd>Q</kbd>/<kbd>E</kbd> rotate it. <kbd>F</kbd> flips it.</p>
+      <label>State data
+        <textarea id="state-text" spellcheck="false"></textarea>
+      </label>
+      <div class="actions">
+        <button id="serialize" type="button">Save state</button>
+        <button id="import-state" type="button">Load state</button>
+      </div>
+    </section>
+  </div>
+</main>
+<script type="module" src="/visual/client/tangram.js"></script>
+</body>
+</html>

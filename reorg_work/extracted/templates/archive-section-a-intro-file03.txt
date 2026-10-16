@@ -1,0 +1,10 @@
+category: templates
+
+KNOWLEDGE ARTICLES - File 3
+
+This is a test file for the reorganization exercise.
+Path: archive/section-a/intro/file03.txt
+Category: templates
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.

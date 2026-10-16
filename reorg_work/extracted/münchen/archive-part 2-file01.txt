@@ -1,0 +1,10 @@
+category: münchen
+
+KNOWLEDGE ARTICLES - File 1
+
+This is a test file for the reorganization exercise.
+Path: archive/part 2/file01.txt
+Category: münchen
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
