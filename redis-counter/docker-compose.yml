@@ -4,7 +4,7 @@ services:
     environment:
       REDIS_HOST: redis
     ports:
-      - "8061:8000"   # host 8000 is already used by another app on this PC
+      - "8000:8000"   # host 8000 is already used by another app on this PC
     depends_on:
       - redis
     restart: unless-stopped

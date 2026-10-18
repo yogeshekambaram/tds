@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="/prediction-market/styles.css">
+  <title>Prediction Game · TDS Network Games</title>
+</head>
+<body>
+<a class="skip-link" href="#forecast-title">Skip to your prediction</a>
+<main>
+  <header class="masthead">
+    <div>
+      <p class="eyebrow">TDS NETWORK GAMES · PREDICTION GAME</p>
+      <h1>Prediction Game</h1>
+      <a class="home-link" href="/">All games</a> <span id="current-student" class="fine-print"></span> <button id="leave-session" type="button" class="quiet-button" hidden>Switch student</button>
+      <p class="intro">See what we know. Make your prediction. Check later to see what changed.</p>
+    </div>
+    <button id="theme-toggle" class="quiet-button" type="button" aria-pressed="false">Use dark theme</button>
+  </header>
+
+  <section id="access-panel" class="card access-card" aria-labelledby="access-title">
+    <div>
+      <p class="eyebrow">YOUR GAME</p>
+      <h2 id="access-title">Join this game</h2>
+      <p class="muted">Open the class link your teacher gave you, or paste it here to sign in. Ask your teacher for a link if you do not have one.</p>
+    </div>
+    <form id="course-form" class="practice-form">
+      <label for="course-link">Class link or sign-in code</label>
+      <div class="inline-form"><input id="course-link" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" required aria-describedby="course-link-error"><button type="submit">Sign in</button></div>
+      <p id="course-link-error" class="field-error" role="alert" hidden></p>
+    </form>
+    <form id="practice-form" class="practice-form" novalidate>
+      <label for="practice-id">Practice name</label>
+      <div class="inline-form"><input id="practice-id" name="student_id" autocomplete="off" required minlength="2" maxlength="60" pattern="(?:[A-Za-z0-9_]|-){2,60}" aria-describedby="practice-id-error" placeholder="For example, learner-1"><button type="submit">Start practice game</button></div>
+      <p id="practice-id-error" class="field-error" hidden></p>
+      <p class="fine-print">This option is for practice games only.</p>
+    </form>
+  </section>
+
+  <p id="status" class="status" role="status" aria-live="polite">Loading games…</p>
+
+  <section class="market-heading card" aria-labelledby="market-title">
+    <div class="market-title-row">
+      <div>
+        <p class="eyebrow" id="market-kicker">THE QUESTION</p>
+        <h2 id="market-title">Choose a game</h2>
+        <p id="market-description" class="muted"></p><p class="fine-print"><a id="other-market-link" href="/" hidden>Choose another game</a></p>
+        <p id="teaching-prompt" class="teaching-prompt" hidden></p>
+      </div>
+    </div>
+    <div class="headline-grid">
+      <article class="headline-stat"><span>Group prediction</span><strong id="collective-value">—</strong><small id="collective-note">What players think will happen</small></article>
+      <article class="headline-stat observation-stat"><span id="evidence-label">Latest facts</span><strong id="observation-value">Waiting for data</strong><small id="observation-note">Where these facts came from</small><a id="observation-source" href="#" target="_blank" rel="noreferrer" hidden>Open the source</a><details id="daily-evidence-details" hidden><summary>See each day</summary><ol id="daily-evidence"></ol></details></article>
+      <article class="headline-stat"><span>Your credits</span><strong id="credits-value">—</strong><small id="holdings-note">Credits you can use</small></article>
+    </div>
+    <details class="outcomes-details">
+      <summary>See how the group answered</summary>
+      <div class="outcomes" id="outcomes" aria-label="Chances for each answer"></div>
+    </details>
+    <p id="settled-result" class="settled-result" hidden><strong>Final result:</strong> <span id="settled-result-value"></span></p>
+    <details class="schedule-box"><summary>Game dates and credit limits</summary><p id="schedule-details" class="muted"></p></details>
+    <details class="explain-box">
+      <summary>How do the group prediction and credits work?</summary>
+      <div class="explain-content">
+        <p>The group prediction shows what players think. It is an idea, not a fact. New information can change it.</p>
+        <p>Credits are practice points. Use some to move the group prediction. You can always save your own answer without using credits.</p>
+      </div>
+    </details>
+  </section>
+
+    <div class="columns">
+    <div class="left-column">
+      <section class="card forecast-card" aria-labelledby="forecast-title">
+        <div class="section-title"><span class="step">1</span><div><h2 id="forecast-title" tabindex="-1">Make your prediction</h2><p class="muted">What do you think will happen? Enter your answer and explain why. You can change your prediction when new information arrives.</p></div></div>
+        <form id="forecast-form" novalidate>
+          <div class="prediction-trade-row">
+            <div>
+              <label id="scalar-prediction-label" for="prediction">Your prediction</label>
+              <div id="scalar-prediction" class="prediction-input-row"><input id="prediction" name="prediction" type="number" inputmode="numeric" step="1" required aria-describedby="prediction-help prediction-error"><span id="prediction-unit" class="unit"></span></div>
+              <div id="categorical-prediction" hidden><label for="forecast-outcome">Your prediction</label><select id="forecast-outcome" required aria-describedby="prediction-help forecast-outcome-error"></select></div>
+              <p id="prediction-help" class="fine-print"></p>
+              <p id="prediction-error" class="field-error" hidden></p><p id="forecast-outcome-error" class="field-error" hidden></p>
+            </div>
+            <div>
+              <fieldset class="trade-mode"><legend>How would you like to trade?</legend><label class="check-label"><input name="trade-mode" id="spend-credits" type="radio" value="credits" checked> Spend credits</label><label class="check-label"><input name="trade-mode" id="buy-shares" type="radio" value="shares"> Buy shares</label></fieldset>
+              <div id="credits-input"><label for="credit-budget">Credits to trade</label><input id="credit-budget" type="number" min="0" step="any" value="0" inputmode="decimal" aria-describedby="available-credits credit-budget-error"><p id="credit-budget-error" class="field-error" hidden></p></div>
+              <div id="shares-input" hidden><label for="trade-quantity">Shares to buy</label><input id="trade-quantity" type="number" min="0.000001" max="1000000" step="any" value="1" inputmode="decimal" aria-describedby="available-credits trade-quantity-error"><p id="trade-quantity-error" class="field-error" hidden></p></div>
+              <p id="available-credits" class="fine-print">Join to see available credits.</p><p id="trade-limit-hint" class="fine-print"></p>
+              <output id="live-estimate" class="live-estimate" aria-live="polite"></output>
+              <p id="trade-example" class="fine-print">Trading is optional. A share pays 1 credit if its answer wins, or 0 if it loses. Estimated sale proceeds are not guaranteed profit.</p>
+            </div>
+          </div>
+          <label for="reason">Your reason</label>
+          <textarea id="reason" name="reason" rows="3" maxlength="1000" required aria-describedby="reason-help reason-error" placeholder="What facts helped you choose? What would change your mind?"></textarea>
+          <p id="reason-error" class="field-error" hidden></p>
+          <p id="reason-help" class="fine-print">Explain your facts in at least 15 characters and 3 words. Trading is optional and does not affect your marks.</p>
+          <fieldset class="sharing-controls"><legend>Choose what to share</legend><div class="privacy-controls">
+            <span class="tooltip-control"><label class="check-label"><input id="trade-public" type="checkbox" aria-describedby="choice-tooltip"> Share choice</label><span id="choice-tooltip" role="tooltip" class="tooltip">The class can see your prediction and any trade you make. Leave unchecked to keep both private.</span></span>
+            <span class="tooltip-control"><label class="check-label"><input id="reflection-public" type="checkbox" aria-describedby="reason-tooltip"> Share reason</label><span id="reason-tooltip" role="tooltip" class="tooltip">The class can see your explanation. Your choice stays private unless you also share it.</span></span>
+          </div><p class="fine-print">You can change sharing in My answers later. Someone may already have seen what you shared.</p></fieldset>
+          <div class="prices-note"><p>Prices may have changed since you opened this page</p><span id="prices-updated">Updated —</span><button id="refresh-prices" type="button">Refresh prices</button></div>
+          <p id="trade-availability" class="fine-print" aria-live="polite"></p>
+          <div class="form-actions"><button id="quote-button" type="button">Review trade</button><button id="trade-button" class="primary-button" type="button" hidden disabled>Confirm trade</button><button class="primary-button" type="submit">Save prediction</button><span id="forecast-result" class="inline-result" aria-live="polite"></span></div>
+          <output id="quote-result" class="quote-result" aria-live="polite">Review a fresh quote before using credits.</output>
+        </form>
+      </section>
+      <section class="card" aria-labelledby="inventory-title"><h2 id="inventory-title">Your shares</h2><p class="fine-print">Estimated sale proceeds account for the price change caused by selling all shares. Check a fresh quote before selling.</p><div class="table-scroll" tabindex="0" role="region" aria-label="Your shares"><table class="mobile-cards"><thead><tr><th scope="col">Outcome</th><th scope="col">Shares owned</th><th scope="col">Current price</th><th scope="col">Estimated sale proceeds</th><th scope="col">Sell shares</th></tr></thead><tbody id="inventory"></tbody></table></div><div id="sale-controls" hidden><label for="sale-quantity">Shares to sell <span id="sale-outcome"></span></label><div class="sale-row"><input id="sale-quantity" type="number" min="0.000001" step="any" inputmode="decimal" aria-describedby="sale-quantity-error"><button id="sell-all" type="button">Sell all</button><button id="review-sale" type="button">Review sale</button><button id="confirm-sale" type="button" hidden>Confirm sale</button></div><p id="sale-quantity-error" class="field-error" hidden></p><label for="sale-reason">Why are you selling?</label><textarea id="sale-reason" rows="2" maxlength="1000" aria-describedby="sale-reason-error" placeholder="What new evidence changed your mind?"></textarea><p id="sale-reason-error" class="field-error" hidden></p><p id="sale-trade-slots" class="fine-print" aria-live="polite"></p><output id="sale-result" class="quote-result" aria-live="polite"></output></div>
+      </section>
+    </div>
+
+    <aside class="right-column">
+      <section class="card timeline-card" aria-labelledby="timeline-title">
+        <div class="section-title"><span class="step optional-step">2</span><div><h2 id="timeline-title">What changed?</h2><p class="muted">Compare new facts with your prediction.</p></div></div>
+        <div class="timeline-tabs" role="group" aria-label="Timeline view">
+          <button id="timeline-personal" type="button" aria-pressed="true">My answers</button>
+          <button id="timeline-crowd" type="button" aria-pressed="false">Class view</button>
+        </div>
+        <div id="history-filters" class="history-filters" role="group" aria-label="History filters"></div>
+        <p id="history-summary" class="fine-print" role="status" aria-live="polite"></p>
+        <div id="timeline" class="table-scroll" tabindex="0" role="region" aria-label="Saved answers and updates"></div>
+      </section>
+      <details class="card history-chart"><summary>How predictions changed</summary><div id="price-history"></div></details>
+      <section class="card receipt-card" aria-labelledby="receipt-title">
+        <h2 id="receipt-title">After the game ends</h2>
+        <p class="muted">When the official result is ready, see your prediction, your marks and the final answer.</p><details><summary>How will I get marks?</summary><p class="fine-print">Taking part: 10 marks. How close your predictions are over time: up to 45 marks. Starting early: up to 22.5 marks. Revising your answer when new facts arrive: up to 22.5 marks. Trading credits does not give you marks.</p></details>
+        <button id="receipt-button" type="button" disabled>Get my result</button>
+        <output id="receipt-result" class="receipt-result" aria-live="polite"></output>
+      </section>
+    </aside>
+  </div>
+  <footer><span id="webmcp-status">Extra tools for TDS students: checking…</span><span>New games can be added by the course team.</span></footer>
+</main>
+<script type="module" src="/prediction/client/market.js"></script>
+</body>
+</html>
