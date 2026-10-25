@@ -1,0 +1,47 @@
+{
+ "runId": "cmp_1792819129",
+ "status": "waiting",
+ "diagnosis": {
+  "rootCause": "deployment_regression",
+  "evidence": [
+   "ev_2oXYoyLxWE5v",
+   "ev_oJ8N6TcTXLtY",
+   "ev_jrZrZFp6mb7g"
+  ]
+ },
+ "dispatches": [
+  {
+   "actionId": "act_099109460e1e",
+   "callId": "call_bc86a8d6d5c2",
+   "phase": "diagnostic",
+   "toolName": "inspect_deployment",
+   "arguments": {
+    "service": "svc_hvjv5fxcdnrn"
+   },
+   "evidence": [
+    "ev_2oXYoyLxWE5v"
+   ],
+   "attempt": 1,
+   "traceparent": "00-0af7651916cd43dd8448eb211c80319c-a2e02eb1af60ee46-01",
+   "tracestate": "vendor=test"
+  },
+  {
+   "actionId": "act_0e7f2e293083",
+   "callId": "call_e6b64dc203fe",
+   "phase": "diagnostic",
+   "toolName": "query_metrics",
+   "arguments": {
+    "service": "svc_hvjv5fxcdnrn",
+    "metric": "error_rate",
+    "windowMinutes": 30
+   },
+   "evidence": [
+    "ev_oJ8N6TcTXLtY"
+   ],
+   "attempt": 1,
+   "traceparent": "00-0af7651916cd43dd8448eb211c80319c-6df47b8dc842bc4a-01",
+   "tracestate": "vendor=test"
+  }
+ ],
+ "approvals": []
+}

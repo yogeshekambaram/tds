@@ -2,3 +2,9 @@ fastapi
 pyjwt[crypto]
 uvicorn
 
+Goods:  211 cartons × ₹1,340      = ₹2,82,740.00
+GST:    12% of ₹2,82,740          = ₹  33,928.80
+Subtotal before credit note       = ₹3,16,668.80
+Less:   credit note CN/25-26/6028 = −  (amount on the credit note)
+
+

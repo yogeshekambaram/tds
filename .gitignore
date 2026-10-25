@@ -3,3 +3,15 @@ tds/
 __pycache__/
 ngork.yml
 *.output
+
+# Python virtual environments
+.venv/
+# Live server state and logs (change constantly; large)
+*.db
+*.db-shm
+*.db-wal
+*.log
+requests*.jsonl
+GA3/Q4/incident-node/state.json
+# Intermediate morph frames
+GA3/Q7/frames/

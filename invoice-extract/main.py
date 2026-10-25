@@ -146,10 +146,21 @@ def pick_amount(text, llm_amount):
     return max(money or [v for _, v, _ in amounts] or [llm or 0.0])
 
 
+FIELD_LABELS = r"\s+(?:total|amount|subtotal|tax|vat|due|date|invoice|bill to|billed to|customer|ship to|payment|balance|currency)\b"
+
+
+def trim_vendor(name):
+    """Cut a captured vendor at its company suffix or at the next field label (single-line invoices)."""
+    m = re.search(rf"^.*?\b{VENDOR_SUFFIX}", name)
+    if m:
+        return m.group(0).strip()
+    return re.split(FIELD_LABELS, name, maxsplit=1, flags=re.I)[0].strip(" .")
+
+
 def pick_vendor(text, llm_vendor):
     m = re.search(r"(?:vendor|from|supplier|seller|billed by|issued by|payee)\s*[:\-]\s*([^\n,;]+)", text, re.I)
     if m:
-        return m.group(1).strip()
+        return trim_vendor(m.group(1).strip())
     v = str(llm_vendor or "").strip()
     pos = text.lower().find(v.lower()) if len(v) > 2 else -1
     if pos >= 0 and not near(text, pos, ("bill to", "billed to", "customer", "ship to", "sold to", "client"), 25):

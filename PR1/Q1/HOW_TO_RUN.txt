@@ -1,0 +1,38 @@
+HOW TO RUN check_usage.ps1  (PR1 Q1 - AI Pipe usage, 2-8 Nov 2026)
+====================================================================
+
+OPTION 1 - PowerShell (VS Code terminal or Windows PowerShell). Copy this one line and press Enter:
+
+powershell -ExecutionPolicy Bypass -File D:\projects\TDS\PR1\Q1\check_usage.ps1
+
+
+OPTION 2 - Git Bash. Copy this one line and press Enter:
+
+powershell -ExecutionPolicy Bypass -File "D:/projects/TDS/PR1/Q1/check_usage.ps1"
+
+
+OPTION 3 - No script, PowerShell one-liner (recent days only, saves nothing):
+
+foreach ($x in (Invoke-RestMethod https://stats.aipipe.org/usage.json).days) { "{0}  complete={1}  {2:N2}" -f $x.date, $x.complete, $x.total.spend_usd }
+
+
+WHAT THE OUTPUT MEANS
+---------------------
+Published: ...                -> when the feed was last updated (every 6 hours)
+2026-11-02  complete=True  ... -> one line per day: date, finished?, cost in USD, IITM users
+Target week (2-8 Nov): X of 7 completed days ..., total so far Y USD
+                              -> running total for the market week (0 until 2 Nov is complete)
+
+Each run also saves a copy of the feed in this folder (usage_<date-time>.json). Keep them: the feed
+holds only 7 days.
+
+
+AFTER EACH RUN
+--------------
+1. Compare the total with your prediction (see the update plan in README.md).
+2. Reload the exam page for a fresh sign-in link (it expires after 20 minutes).
+3. On the market page, set "Your prediction", write a reason with the numbers you saw, click "Save prediction".
+4. Add a row to the decision log in README.md.
+
+Trading closes 9 Nov 2026, 00:00 UTC (05:30 IST).
+After 9-16 Nov: click "Get my result", copy the signed result token, paste it into the exam answer box.

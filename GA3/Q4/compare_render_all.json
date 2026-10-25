@@ -1,0 +1,274 @@
+[
+ {
+  "runId": "cmp0_1792819161",
+  "status": "waiting",
+  "diagnosis": {
+   "rootCause": "deployment_regression",
+   "evidence": [
+    "ev_2oXYoyLxWE5v",
+    "ev_oJ8N6TcTXLtY",
+    "ev_jrZrZFp6mb7g"
+   ]
+  },
+  "dispatches": [
+   {
+    "actionId": "act_043810168800",
+    "callId": "call_a343273f4192",
+    "phase": "diagnostic",
+    "toolName": "inspect_deployment",
+    "arguments": {
+     "service": "svc_hvjv5fxcdnrn"
+    },
+    "evidence": [
+     "ev_2oXYoyLxWE5v"
+    ],
+    "attempt": 1,
+    "traceparent": "00-61853411b887086e7c2b16abc5586afa-f11a7c068799307d-01"
+   },
+   {
+    "actionId": "act_a45a9201e798",
+    "callId": "call_5f38d0fba91a",
+    "phase": "diagnostic",
+    "toolName": "query_metrics",
+    "arguments": {
+     "service": "svc_hvjv5fxcdnrn",
+     "metric": "error_rate",
+     "windowMinutes": 30
+    },
+    "evidence": [
+     "ev_oJ8N6TcTXLtY"
+    ],
+    "attempt": 1,
+    "traceparent": "00-61853411b887086e7c2b16abc5586afa-cda4261007856113-01"
+   }
+  ],
+  "approvals": []
+ },
+ {
+  "runId": "cmp1_1792819161",
+  "status": "waiting",
+  "diagnosis": {
+   "rootCause": "database_connection_exhaustion",
+   "evidence": [
+    "ev_GTSRXWFsy2eR",
+    "ev_6au6TeALTK5d",
+    "ev_GE9CtMYSYixK"
+   ]
+  },
+  "dispatches": [
+   {
+    "actionId": "act_c4931cc6ff64",
+    "callId": "call_e6530ace937f",
+    "phase": "diagnostic",
+    "toolName": "query_logs",
+    "arguments": {
+     "service": "svc_amokuaiueirc",
+     "query": "pool acquisition timeout",
+     "windowMinutes": 30
+    },
+    "evidence": [
+     "ev_6au6TeALTK5d"
+    ],
+    "attempt": 1,
+    "traceparent": "00-d2febe4b329161e730ac33bd9ad7cefc-3e685965fba3d024-01"
+   },
+   {
+    "actionId": "act_cfe0d14d0644",
+    "callId": "call_b03d49aa84c9",
+    "phase": "diagnostic",
+    "toolName": "query_metrics",
+    "arguments": {
+     "service": "svc_amokuaiueirc",
+     "metric": "db_pool_wait",
+     "windowMinutes": 30
+    },
+    "evidence": [
+     "ev_GTSRXWFsy2eR"
+    ],
+    "attempt": 1,
+    "traceparent": "00-d2febe4b329161e730ac33bd9ad7cefc-2b16964165e0d6cd-01"
+   }
+  ],
+  "approvals": []
+ },
+ {
+  "runId": "cmp2_1792819162",
+  "status": "waiting",
+  "diagnosis": {
+   "rootCause": "dependency_certificate_expired",
+   "evidence": [
+    "ev_7WaDoP5VdjKX",
+    "ev_6syDW5ZqEkcf",
+    "ev_SytVgFcgTJh6"
+   ]
+  },
+  "dispatches": [
+   {
+    "actionId": "act_01f0bc661bf9",
+    "callId": "call_9f47fc46c343",
+    "phase": "diagnostic",
+    "toolName": "dependency_status",
+    "arguments": {
+     "dependency": "dep_pu2w32r4shnm"
+    },
+    "evidence": [
+     "ev_7WaDoP5VdjKX"
+    ],
+    "attempt": 1,
+    "traceparent": "00-73167510fc0c0c63b2e6a7cb4e1c3719-da3d6481cac3bbca-01"
+   },
+   {
+    "actionId": "act_d9f7cf6e8e4a",
+    "callId": "call_3c2112814bec",
+    "phase": "diagnostic",
+    "toolName": "read_runbook",
+    "arguments": {
+     "service": "svc_wmjgsjysdyd3",
+     "topic": "tls-expiry"
+    },
+    "evidence": [
+     "ev_SytVgFcgTJh6"
+    ],
+    "attempt": 1,
+    "traceparent": "00-73167510fc0c0c63b2e6a7cb4e1c3719-edfea8cd19c669ee-01"
+   }
+  ],
+  "approvals": []
+ },
+ {
+  "runId": "cmp3_1792819162",
+  "status": "waiting",
+  "diagnosis": {
+   "rootCause": "feature_flag_recursion",
+   "evidence": [
+    "ev_trBLerB6X5D6",
+    "ev_EkCHCME2zy5X",
+    "ev_DNpLXJ3TGDvp"
+   ]
+  },
+  "dispatches": [
+   {
+    "actionId": "act_63f3a9e2e2c5",
+    "callId": "call_24a2670627f9",
+    "phase": "diagnostic",
+    "toolName": "query_logs",
+    "arguments": {
+     "service": "svc_duy4faszcmgu",
+     "query": "evaluation depth exceeded",
+     "windowMinutes": 30
+    },
+    "evidence": [
+     "ev_trBLerB6X5D6"
+    ],
+    "attempt": 1,
+    "traceparent": "00-fb0c17f9af2c55644167889d60cdd361-00a53a89154be6d7-01"
+   },
+   {
+    "actionId": "act_d013b7319dc1",
+    "callId": "call_b5a55368bc3a",
+    "phase": "diagnostic",
+    "toolName": "inspect_deployment",
+    "arguments": {
+     "service": "svc_duy4faszcmgu"
+    },
+    "evidence": [
+     "ev_DNpLXJ3TGDvp"
+    ],
+    "attempt": 1,
+    "traceparent": "00-fb0c17f9af2c55644167889d60cdd361-215d8a172dc4d1b9-01"
+   }
+  ],
+  "approvals": []
+ },
+ {
+  "runId": "cmp4_1792819162",
+  "status": "waiting",
+  "diagnosis": {
+   "rootCause": "traffic_capacity_exhaustion",
+   "evidence": [
+    "ev_S9Ba3rvmzp64",
+    "ev_P4RPudCSzkuZ",
+    "ev_828EmiMNzzck"
+   ]
+  },
+  "dispatches": [
+   {
+    "actionId": "act_169ce102c714",
+    "callId": "call_0b33357ea091",
+    "phase": "diagnostic",
+    "toolName": "query_metrics",
+    "arguments": {
+     "service": "svc_utlo8kuzjd2q",
+     "metric": "request_saturation",
+     "windowMinutes": 30
+    },
+    "evidence": [
+     "ev_S9Ba3rvmzp64"
+    ],
+    "attempt": 1,
+    "traceparent": "00-dc825a3245bc55cfe72f56acfea79eb5-311b15cf373b47f0-01"
+   }
+  ],
+  "approvals": []
+ },
+ {
+  "runId": "cmp5_1792819163",
+  "status": "waiting",
+  "diagnosis": {
+   "rootCause": "secret_rotation_mismatch",
+   "evidence": [
+    "ev_qQXR9YJ8mMXs",
+    "ev_Wd3a3vk9TSVR",
+    "ev_4JBFsnP7o4To"
+   ]
+  },
+  "dispatches": [
+   {
+    "actionId": "act_2d74040a2968",
+    "callId": "call_afe666585c37",
+    "phase": "diagnostic",
+    "toolName": "read_runbook",
+    "arguments": {
+     "service": "svc_qrrrvv2gmjf2",
+     "topic": "secret-rotation"
+    },
+    "evidence": [
+     "ev_4JBFsnP7o4To"
+    ],
+    "attempt": 1,
+    "traceparent": "00-50590a2d3c38b2cc7b108afe5f1b7e0b-98b3cf5a33a830d5-01"
+   }
+  ],
+  "approvals": []
+ },
+ {
+  "runId": "cmp6_1792819163",
+  "status": "waiting",
+  "diagnosis": {
+   "rootCause": "secret_rotation_mismatch",
+   "evidence": [
+    "ev_vSrVmgeUYVp4",
+    "ev_RELm4aDAfzN8",
+    "ev_x686KCcWVXRK"
+   ]
+  },
+  "dispatches": [
+   {
+    "actionId": "act_6d6d286dea33",
+    "callId": "call_67f1bdc0c17e",
+    "phase": "diagnostic",
+    "toolName": "read_runbook",
+    "arguments": {
+     "service": "svc_i8v7p6gjffyy",
+     "topic": "secret-rotation"
+    },
+    "evidence": [
+     "ev_x686KCcWVXRK"
+    ],
+    "attempt": 1,
+    "traceparent": "00-197227ce74f6d9c49bc94d16e4c7cba8-80aa2894bb664d78-01"
+   }
+  ],
+  "approvals": []
+ }
+]
